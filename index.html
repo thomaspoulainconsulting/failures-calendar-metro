@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Calendrier des pannes</title>
-    <link rel="stylesheet" href="styles-xp.css">
+    <link id="themeStylesheet" rel="stylesheet" href="styles-xp.css">
 </head>
 <body>
 <h1 class="title">Calendrier des pannes 2025</h1>
@@ -11,7 +11,12 @@
 <div id="breakdownsTitle" class="retro-subtitle"></div>
 <div class="calendar" id="calendar"></div>
 
-<div class="start-menu" id="startMenu">
+<div class="start-menu" id="startMenu" style="display: none;">
+    <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
+        <button onclick="setTheme('styles.css')" style="background: linear-gradient(to bottom, #c0c0c0, #a0a0a0); border: 2px outset #fff; padding: 4px; font-family: 'MS Sans Serif', Tahoma, sans-serif; cursor: pointer;">🖥️ Windows 98</button>
+        <button onclick="setTheme('styles-xp.css')" style="background: linear-gradient(to bottom, #f0f8ff, #d0e0f0); border: 2px outset #7ba5d7; padding: 4px; font-family: Tahoma, sans-serif; cursor: pointer;">🌈 Windows XP</button>
+    </div>
+    <hr style="margin: 10px 0;">
     Vibe coded by <a href="https://www.linkedin.com/in/thomas-poulain-freelance/" target="_blank">tpoulain (2025)</a>
 </div>
 <div class="taskbar">
@@ -21,6 +26,13 @@
     </div>
     <div class="clock" id="clock">🕰️ <span id="clockTime"></span></div>
 </div>
+
+<script>
+    function setTheme(href) {
+      const link = document.getElementById('themeStylesheet');
+      if (link) link.href = href;
+    }
+</script>
 
 <script src="calendar.js"></script>
 </body>
