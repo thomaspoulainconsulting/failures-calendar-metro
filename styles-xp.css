@@ -1,0 +1,260 @@
+body {
+  font-family: "Tahoma", sans-serif;
+  background: linear-gradient(to bottom, #87ceeb 0%, #b0e0e6 100%);
+  color: #000;
+  margin: 0;
+}
+
+h1 {
+  background: linear-gradient(to bottom, #316ac5, #6394e6);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 2px solid #1e3e8f;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+h1::before {
+  content: url('https://icons.iconarchive.com/icons/dtafalonso/winxp/16/Bug-icon.png');
+}
+
+.retro-subtitle {
+  text-align: center;
+  background: #e7f3ff;
+  border: 1px solid #aaccee;
+  margin: 8px auto;
+  padding: 4px 10px;
+  box-shadow: inset 1px 1px #ffffff, inset -1px -1px #d0e8ff;
+  width: fit-content;
+  border-radius: 4px;
+}
+
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  background: linear-gradient(to top, #d8ecff, #f2f9ff);
+  border-top: 1px solid #8bb3e3;
+  box-shadow: inset 0 2px #a0c2e9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.start-button {
+  background: linear-gradient(to bottom, #ffffff, #dceeff);
+  border: 2px outset #f0f0f0;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.start-button.pressed {
+  border: 2px inset #7da2ce;
+  background: #c6e0f8;
+}
+
+.start-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.start-menu {
+  position: fixed;
+  bottom: 34px;
+  left: 0;
+  width: 220px;
+  background: #f4faff;
+  border: 2px outset #c0d8f0;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.25);
+  padding: 10px;
+  font-size: 14px;
+  display: none;
+  z-index: 999;
+  border-radius: 6px;
+}
+
+.clock {
+  padding: 4px 8px;
+  background: #e7f1fb;
+  border: 2px inset #d0e4f0;
+  border-radius: 4px;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 10px;
+}
+
+.month {
+  background: #e9f4ff;
+  padding: 10px;
+  border: 2px solid #a3bce2;
+  box-shadow: inset 1px 1px #ffffff, inset -1px -1px #6c9bd2;
+  border-radius: 6px;
+}
+
+.month h2 {
+  text-align: center;
+  background: linear-gradient(to bottom, #367cd8, #5ca1f3);
+  color: white;
+  padding: 6px;
+  margin: 0 0 6px;
+  font-size: 16px;
+  border: 1px solid #7ba5d7;
+  border-radius: 4px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: 12px;
+  background: #f0f8ff;
+  border: 2px inset #d0e0f0;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.day-name {
+  background: #d0e5ff;
+  font-weight: bold;
+  text-align: center;
+  padding: 4px 0;
+  border: 1px solid #a0c0e0;
+  border-radius: 2px;
+}
+
+.day {
+  background: white;
+  border: 1px solid #c0d0e0;
+  margin: 1px;
+  padding: 4px;
+  text-align: center;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.breakdown {
+  background-color: #cc0000;
+  color: yellow;
+  font-weight: bold;
+  border: 2px ridge #000;
+  animation: blink 1s step-start 0s infinite;
+  border-radius: 2px;
+}
+
+.error-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #f0faff;
+  border: 2px outset #a3bce2;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  width: 320px;
+  z-index: 9999;
+  font-family: "Tahoma", sans-serif;
+  border-radius: 6px;
+}
+
+.error-header {
+  background: linear-gradient(to bottom, #316ac5, #6394e6);
+  color: white;
+  padding: 6px 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.error-body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.error-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.error-buttons button {
+  background: linear-gradient(to bottom, #ffffff, #d0e0f0);
+  border: 2px outset #fff;
+  padding: 4px 12px;
+  font-family: "Tahoma", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+a {
+  color: #0a3d91;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .month {
+    margin-bottom: 20px;
+  }
+
+  .taskbar {
+    flex-direction: column;
+    height: auto;
+    padding: 5px;
+  }
+
+  .start-button, .clock {
+    width: 100%;
+    justify-content: center;
+    margin: 4px 0;
+  }
+
+  h1.title {
+    font-size: 5vw;
+    padding: 8px;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .error-popup {
+    width: 90%;
+    max-width: 320px;
+  }
+
+  .start-menu {
+    width: 100%;
+    max-width: 300px;
+  }
+}
