@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendrier des pannes</title>
+    <style>
+        body {
+          font-family: "MS Sans Serif", Tahoma, sans-serif;
+          background-color: #008080;
+          color: black;
+          margin: 0;
+          cursor: url('https://win98icons.alexmeub.com/cursors/arrow.cur'), auto;
+        }
+        h1 {
+          text-align: center;
+          background-color: #000080;
+          color: white;
+          padding: 10px;
+          border: 2px solid #ffffff;
+          box-shadow: inset -2px -2px #000, inset 2px 2px #ccc;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+        }
+        h1::before {
+          content: url('https://icons.iconarchive.com/icons/dtafalonso/winxp/16/Bug-icon.png');
+          display: inline-block;
+        }
+        .taskbar {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 32px;
+          background: #c0c0c0;
+          border-top: 2px solid #fff;
+          box-shadow: inset 0 1px #808080;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 2px 5px;
+          font-size: 14px;
+          z-index: 9999;
+        }
+        .start-button {
+          background: #e0e0e0;
+          border: 2px outset #fff;
+          padding: 2px 8px;
+          font-family: "MS Sans Serif", Tahoma, sans-serif;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+        }
+        .start-button.pressed {
+          border: 2px inset #808080;
+          background: #d0d0d0;
+        }
+        .start-button img {
+          width: 16px;
+          height: 16px;
+        }
+        .start-menu {
+          position: fixed;
+          bottom: 32px;
+          left: 0;
+          width: 200px;
+          background: #c0c0c0;
+          border: 2px outset #fff;
+          box-shadow: inset -2px -2px #000, inset 2px 2px #808080;
+          padding: 10px;
+          font-size: 14px;
+          display: none;
+          z-index: 9999;
+        }
+        .clock {
+          padding: 2px 6px;
+          background: #dcdcdc;
+          border: 2px inset #fff;
+        }
+        .calendar {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          padding: 50px 10px 40px;
+        }
+        .month {
+          background: #c0c0c0;
+          padding: 10px;
+          border: 2px solid #fff;
+          box-shadow: inset -2px -2px #000, inset 2px 2px #808080;
+        }
+        .month h2 {
+          text-align: center;
+          background: linear-gradient(to bottom, #000080, #0000a0);
+          color: white;
+          padding: 4px;
+          margin-bottom: 5px;
+          border: 2px outset #fff;
+          font-size: 1em;
+        }
+        .days {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          font-size: 12px;
+          background: #dcdcdc;
+          border: 2px inset #fff;
+          padding: 2px;
+        }
+        .day-name {
+          background: #a0a0a0;
+          color: black;
+          font-weight: bold;
+          padding: 4px;
+          border: 1px solid #808080;
+        }
+        .day {
+          background: #ffffff;
+          border: 1px solid #808080;
+          margin: 1px;
+          padding: 4px;
+          text-align: center;
+          height: 30px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+        .breakdown {
+          background-color: #ff0000;
+          color: yellow;
+          font-weight: bold;
+          border: 2px ridge #000;
+          animation: blink 1s step-start 0s infinite;
+        }
+        .breakdown::after {
+          position: absolute;
+          bottom: -10px;
+          right: -10px;
+          width: 16px;
+          height: 16px;
+        }
+        @keyframes blink {
+          50% { opacity: 0; }
+        }
+        .error-popup {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: #c0c0c0;
+          border: 2px outset #fff;
+          box-shadow: inset -2px -2px #000, inset 2px 2px #808080;
+          width: 300px;
+          z-index: 9999;
+          font-family: "MS Sans Serif", Tahoma, sans-serif;
+        }
+        .error-header {
+          background: #000080;
+          color: white;
+          padding: 4px;
+          font-weight: bold;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .error-body {
+          display: flex;
+          padding: 10px;
+          gap: 10px;
+        }
+        .error-body img {
+          width: 32px;
+          height: 32px;
+        }
+        .error-buttons {
+          display: flex;
+          justify-content: center;
+          padding: 10px;
+        }
+        .error-buttons button {
+          font-family: "MS Sans Serif", Tahoma, sans-serif;
+          background: #e0e0e0;
+          border: 2px outset #fff;
+          padding: 2px 10px;
+        }
+          a:hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+    </style>
+</head>
+<body>
+<h1>Calendrier des pannes</h1>
+<div class="calendar" id="calendar"></div>
+
+<div class="start-menu" id="startMenu">Vibe coded by <a href="https://www.linkedin.com/in/thomas-poulain-freelance/" target="_blank">tpoulain (2025)</a></div>
+<div class="taskbar">
+    <div class="start-button" id="startButton" onclick="toggleStartMenu()">
+        <img src="./start_icon.png" alt="Start">
+        Démarrer
+    </div>
+    <div class="clock" id="clock">
+        🕰️ <span id="clockTime"></span>
+    </div>
+</div>
+
+<script>
+    const startButton = document.getElementById("startButton");
+    const startMenu = document.getElementById("startMenu");
+
+    function toggleStartMenu() {
+      const isOpen = startMenu.style.display === "block";
+      startMenu.style.display = isOpen ? "none" : "block";
+      startButton.classList.toggle("pressed", !isOpen);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const clockTime = document.getElementById("clockTime");
+      clockTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    const dayNames = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+    const breakdowns = [
+      { date: "2025-01-03", reason: "Problème de réseau" },
+      { date: "2025-04-15", reason: "Panne serveur" },
+      { date: "2025-07-22", reason: "Maintenance non planifiée" },
+      { date: "2025-12-31", reason: "Incident inconnu" }
+    ];
+
+
+
+    const calendar = document.getElementById("calendar");
+
+    function showErrorPopup(dateStr) {
+      const popup = document.createElement("div");
+      popup.className = "error-popup";
+      popup.innerHTML = `<div class="error-header">Panne</div><div class="error-body"><div>Une panne a été enregistrée le ${dateStr}.</div></div><div class="error-buttons"><button onclick="this.closest('.error-popup').remove()">OK</button></div>`;
+      document.body.appendChild(popup);
+    }
+
+    for (let m = 0; m < 12; m++) {
+      const date = new Date(2025, m, 1);
+      const monthDiv = document.createElement("div");
+      monthDiv.className = "month";
+      const header = document.createElement("h2");
+      header.textContent = monthNames[m];
+      monthDiv.appendChild(header);
+      const daysDiv = document.createElement("div");
+      daysDiv.className = "days";
+      dayNames.forEach(name => {
+        const dayName = document.createElement("div");
+        dayName.className = "day-name";
+        dayName.textContent = name;
+        daysDiv.appendChild(dayName);
+      });
+      let firstDay = (date.getDay() + 6) % 7;
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement("div");
+        empty.className = "day";
+        daysDiv.appendChild(empty);
+      }
+      const daysInMonth = new Date(2025, m + 1, 0).getDate();
+      for (let d = 1; d <= daysInMonth; d++) {
+        const day = document.createElement("div");
+        day.className = "day";
+        day.textContent = d;
+        const dateStr = `2025-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const breakdown = breakdowns.find(b => b.date === dateStr);
+        if (breakdown) {
+          day.classList.add("breakdown");
+          day.addEventListener("click", () => showErrorPopup(breakdown.date, breakdown.reason));
+        }
+        daysDiv.appendChild(day);
+      }
+      monthDiv.appendChild(daysDiv);
+      calendar.appendChild(monthDiv);
+    }
+  document.addEventListener("click", (e) => {
+  const isClickInside = startButton.contains(e.target) || startMenu.contains(e.target);
+  if (!isClickInside) {
+    startMenu.style.display = "none";
+    startButton.classList.remove("pressed");
+  }
+});
+</script>
+</body>
+</html>
